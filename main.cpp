@@ -1,5 +1,6 @@
 #include "SFML/Graphics.hpp"
 #include "include/map.h"
+#include "include/input.h"
 
 using namespace sf;
 
@@ -11,14 +12,15 @@ int main() {
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
 
-    Map *map = new Map();
+    auto *map = new Map();
     map->load_map("1");
 
+    Event event{};
+    auto *input = new Input();
+
     while (window.isOpen()) {
-        Event event{};
-        while (window.pollEvent(event))
-            if (event.type == sf::Event::Closed)
-                window.close();
+        input->input(window, event);
+        input->show_input();
 
         window.clear();
 

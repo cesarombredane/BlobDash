@@ -10,8 +10,9 @@ using namespace sf;
 
 class Map {
 private:
-    Texture tileSet;
+    static const int TILE_SIZE = 32;
 
+    Texture tileSet;
     vector<vector<int>> map;
 
 public:

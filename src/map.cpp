@@ -45,12 +45,12 @@ void Map::draw_map(RenderWindow &window) {
         for (int tile_num : y_map) {
             Sprite tile;
             tile.setTexture(this->tileSet);
-            tile.setTextureRect(IntRect(tile_num % 10 * 32, tile_num / 10 * 32, 32, 32));
+            tile.setTextureRect(IntRect(tile_num % 10 * TILE_SIZE, tile_num / 10 * TILE_SIZE, TILE_SIZE, TILE_SIZE));
             tile.setPosition(Vector2f(x_window, y_window));
             window.draw(tile);
 
-            x_window += 32;
+            x_window += TILE_SIZE;
         }
-        y_window += 32;
+        y_window += TILE_SIZE;
     }
 }

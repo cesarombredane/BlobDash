@@ -10,16 +10,20 @@ using namespace sf;
 
 class Map {
 private:
-    static const int TILE_SIZE = 32;
-
     Texture tileSet;
     vector<vector<int>> map;
 
 public:
     Map();
 
+    int get_map_value(int, int);
+    int get_height();
+    int get_width();
+
     void load_map(const string&);
     void draw_map(RenderWindow &window);
+
+    static const int TILE_SIZE = 32;
 };
 
 #endif

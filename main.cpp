@@ -1,6 +1,7 @@
 #include "SFML/Graphics.hpp"
 #include "include/map.h"
 #include "include/input.h"
+#include "include/player.h"
 
 using namespace sf;
 
@@ -18,13 +19,18 @@ int main() {
     Event event{};
     auto *input = new Input();
 
+    auto player = new Player(input, map);
+
     while (window.isOpen()) {
         input->input(window, event);
-        input->show_input();
+        //input->show_input();
+
+        player->move();
 
         window.clear();
 
         map->draw_map(window);
+        player->draw_player(window);
 
         window.display();
     }

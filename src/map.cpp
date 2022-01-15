@@ -54,3 +54,15 @@ void Map::draw_map(RenderWindow &window) {
         y_window += TILE_SIZE;
     }
 }
+
+int Map::get_map_value(int x, int y) {
+    return this->map.at(y).at(x);
+}
+
+int Map::get_height() {
+    return (int) this->map.size();
+}
+
+int Map::get_width() {
+    return (int) this->map.at(0).size();
+}

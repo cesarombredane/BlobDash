@@ -3,7 +3,7 @@ project(blob_dash)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(blob_dash main.cpp src/map.cpp src/input.cpp)
+add_executable(blob_dash main.cpp src/map.cpp src/input.cpp src/player.cpp)
 
 set(SFML_STATIC_LIBRARY TRUE)
 set(SFML_DIR D:/SFML-2.5.1/lib/cmake/SFML)

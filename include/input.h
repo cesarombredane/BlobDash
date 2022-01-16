@@ -7,15 +7,13 @@ using namespace sf;
 
 class Input {
 private:
-    bool up, down, left, right;
+    int x, y;
 
 public:
     Input();
 
-    bool get_up() const;
-    bool get_down() const;
-    bool get_left() const;
-    bool get_right() const;
+    int get_x() const;
+    int get_y() const;
 
     void input(RenderWindow &window, Event &event);
     void show_input() const;

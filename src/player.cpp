@@ -9,7 +9,6 @@ Player::Player(Input *input, Map *map) {
     if (!this->texture.loadFromFile("../assets/graphics/player.png"))
         cerr << "error : player image not found" << endl;
 
-    this->position = this->speed = Vector2i(0, 0);
     this->collision_up = this->collision_down = this->collision_left = this->collision_right = -1;
     this->input = input;
     this->map = map;
@@ -50,20 +49,17 @@ void Player::collision() {
 }
 
 void Player::move() {
-    // gravité
-    //this->acceleration.y = .5;
-    //this->speed.y = min((float) 15, this->speed.y + this->acceleration.y);
+    this->acceleration.y = this->input->get_y() * this->ACCELERATION;
+    this->acceleration.x = this->input->get_x() * this->ACCELERATION;
 
-    // mouvement
-    if (this->input->get_up()) this->speed.y = -10;
-    else if (this->input->get_down()) this->speed.y = 10;
+    if (this->acceleration.y > 0) this->speed.y = min(this->speed.y + this->acceleration.y, this->MAX_SPEED);
+    else if (this->acceleration.y < 0) this->speed.y = max(this->speed.y + this->acceleration.y, -this->MAX_SPEED);
     else this->speed.y = 0;
 
-    if (this->input->get_left()) this->speed.x = -10;
-    else if (this->input->get_right()) this->speed.x = 10;
+    if (this->acceleration.x > 0) this->speed.x = min(this->speed.x + this->acceleration.x, this->MAX_SPEED);
+    else if (this->acceleration.x < 0) this->speed.x = max(this->speed.x + this->acceleration.x, -this->MAX_SPEED);
     else this->speed.x = 0;
 
-    // colision
     this->collision();
 
     if (this->collision_up != -1) this->position.y -= this->collision_up;

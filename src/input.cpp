@@ -1,11 +1,12 @@
 #include "../include/input.h"
 
 #include "iostream"
+#include "cmath"
 
 using namespace std;
 
 Input::Input() {
-    this->up = this->down = this->left = this->right = false;
+    this->x = this->y = 0;
 }
 
 void Input::input(RenderWindow &window, Event &event) {
@@ -20,16 +21,16 @@ void Input::input(RenderWindow &window, Event &event) {
                         window.close();
                         break;
                     case Keyboard::Z:
-                        this->up = true;
+                        this->y = -1;
                         break;
                     case Keyboard::S:
-                        this->down = true;
+                        this->y = 1;
                         break;
                     case Keyboard::Q:
-                        this->left = true;
+                        this->x = -1;
                         break;
                     case Keyboard::D:
-                        this->right = true;
+                        this->x = 1;
                         break;
                     default:
                         break;
@@ -38,16 +39,16 @@ void Input::input(RenderWindow &window, Event &event) {
             case Event::KeyReleased:
                 switch (event.key.code) {
                     case Keyboard::Z:
-                        this->up = false;
+                        this->y = Keyboard::isKeyPressed(Keyboard::S) ? 1 : 0;
                         break;
                     case Keyboard::S:
-                        this->down = false;
+                        this->y = Keyboard::isKeyPressed(Keyboard::Z) ? -1 : 0;
                         break;
                     case Keyboard::Q:
-                        this->left = false;
+                        this->x = Keyboard::isKeyPressed(Keyboard::D) ? 1 : 0;
                         break;
                     case Keyboard::D:
-                        this->right = false;
+                        this->x = Keyboard::isKeyPressed(Keyboard::Q) ? -1 : 0;
                         break;
                     default:
                         break;
@@ -60,21 +61,13 @@ void Input::input(RenderWindow &window, Event &event) {
 }
 
 void Input::show_input() const {
-    cout << "up = " << this->up << " | down = " << this->down << " | left = " << this->left << " | right = " << this->right << endl;
+    cout << "x = " << this->x << " | y = " << this->y << endl;
 }
 
-bool Input::get_up() const {
-    return this->up;
+int Input::get_x() const {
+    return this->x;
 }
 
-bool Input::get_down() const {
-    return this->down;
-}
-
-bool Input::get_left() const {
-    return this->left;
-}
-
-bool Input::get_right() const {
-    return this->right;
+int Input::get_y() const {
+    return this->y;
 }

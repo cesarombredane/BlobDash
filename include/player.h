@@ -9,12 +9,14 @@ using namespace sf;
 
 class Player {
 private:
+    const int MAX_SPEED = 15;
+    const int ACCELERATION = 4;
+
     Texture texture;
     Input *input;
     Map *map;
 
-    Vector2i position, speed;
-
+    Vector2i position, speed, acceleration;
     int collision_up, collision_down, collision_left, collision_right;
 
 public:

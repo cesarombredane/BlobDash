@@ -23,7 +23,6 @@ int main() {
 
     while (window.isOpen()) {
         input->input(window, event);
-        // input->show_input();
 
         player->move();
 

@@ -17,7 +17,8 @@ private:
     Map *map;
 
     Vector2i position, speed, acceleration;
-    int collision_up, collision_down, collision_left, collision_right;
+    int collision_up, collision_down, collision_left, collision_right,
+        collision_up_left, collision_up_right, collision_down_left, collision_down_right;
 
 public:
     Player(Input*, Map*);

@@ -56,6 +56,7 @@ void Map::draw_map(RenderWindow &window) {
 }
 
 int Map::get_map_value(int x, int y) {
+    if (y >= this->map.size() || x >= this->map.at(0).size()) return 1000;
     return this->map.at(y).at(x);
 }
 

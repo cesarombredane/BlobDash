@@ -22,6 +22,7 @@ Player::Player(Input *input, Map *map) {
     this->wall_jump_dir = 0;
     this->input = input;
     this->map = map;
+    this->state = s_stand;
 }
 
 void Player::collision() {
@@ -92,12 +93,14 @@ void Player::collision() {
 void Player::move() {
     // acceleration
     this->acceleration.x = this->input->get_x() * this->ACCELERATION;
+    this->state = this->acceleration.x == 0 ? s_stand : s_walk;
 
     // gravity
     this->acceleration.y = this->GRAVITY;
 
     // jump
     if ((this->input->get_jump() && this->grounded) || this->counter_frame_jump != 0) {
+        this->state = this->d_jump ? s_jump : s_djump;
         this->acceleration.y = -this->JUMP_ACCELERATION;
         this->counter_frame_jump = ++this->counter_frame_jump % this->NB_FRAME_JUMP;
         this->input->set_jump(false);
@@ -119,12 +122,12 @@ void Player::move() {
     // wall jump x
     if (this->counter_frame_wall_jump != 0) {
         this->acceleration.x = this->wall_jump_dir * this->JUMP_ACCELERATION;
-        this->counter_frame_wall_jump = ++this->counter_frame_wall_jump % this->NB_FRAME_WALL_JUMP;
+        this->counter_frame_wall_jump = ++this->counter_frame_wall_jump % this->NB_FRAME_JUMP;
     }
 
     // speed
     if (this->acceleration.y > 0) this->speed.y = min(this->speed.y + this->acceleration.y, this->MAX_SPEED_GRAVITY);
-    else if (this->acceleration.y < 0) this->speed.y = max(this->speed.y + this->acceleration.y, -this->MAX_SPEED);
+    else if (this->acceleration.y < 0) this->speed.y = max(this->speed.y + this->acceleration.y, -this->MAX_SPEED_JUMP);
     else this->speed.y = 0;
 
     if (this->acceleration.x > 0) this->speed.x = min(this->speed.x + this->acceleration.x, this->MAX_SPEED);
@@ -133,6 +136,7 @@ void Player::move() {
 
     // dash
     if (this->input->get_dash() && this->dash || this->counter_frame_dash != 0) {
+        this->state = s_dash;
         this->speed.x *= 3;
         if (this->speed.x != 0)
             this->speed.y = 0;
@@ -154,7 +158,11 @@ void Player::move() {
         this->grounded = true;
     }
     else {
-        if ((this->collision_left != -1 || this->collision_right != -1) && this->speed.y > 0) this->speed.y /= 2;
+        if ((this->collision_left != -1 || this->collision_right != -1) && this->speed.y > 0) {
+            this->state = s_wall;
+            this->speed.y /= 2;
+        }
+        else if (this->speed.y > 0) this->state = s_fall;
         this->position.y += this->speed.y;
     }
 
@@ -190,7 +198,7 @@ void Player::show_collision() const {
 }
 
 void Player::show_state() const {
-    cout << "Grounded: " << this->grounded << "| Right: " << this->wall_right << "| Left: " << this->wall_left << endl;
+    cout << "State: " << this->state << endl;
 }
 
 void Player::show_position() const {

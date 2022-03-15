@@ -7,23 +7,27 @@
 
 using namespace sf;
 
+enum State {s_stand, s_walk, s_jump, s_djump, s_wall, s_dash, s_fall};
+
 class Player {
 private:
-    const int MAX_SPEED = 8;
+    const int MAX_SPEED = 6;
+    const int MAX_SPEED_JUMP = 8;
     const int MAX_SPEED_GRAVITY = 12;
+
     const int ACCELERATION = 2;
     const int GRAVITY = 4;
     const int JUMP_ACCELERATION = 6;
 
     const int NB_FRAME_JUMP = 12;
     const int NB_FRAME_DASH = 6;
-    const int NB_FRAME_WALL_JUMP = 12;
 
     Texture texture;
     Input *input;
     Map *map;
 
     Vector2i position, speed, acceleration;
+    State state;
 
     int collision_up, collision_down, collision_left, collision_right,
         collision_up_left, collision_up_right, collision_down_left, collision_down_right;

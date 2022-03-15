@@ -25,6 +25,7 @@ int main() {
         input->input(window, event);
 
         player->move();
+        player->show_state();
 
         window.clear();
 
@@ -36,3 +37,16 @@ int main() {
 
     return 0;
 }
+
+// TODO : create player frame :
+/*
+ * stand : loop
+ * walk : loop
+ * jump : 12 frames
+ * d_jump : 12 frames
+ * wall : x frames + const
+ * dash : 6 frames
+ * fall : x frames + const
+ */
+
+// TODO : draw player good frames

@@ -37,5 +37,4 @@ int main() {
     return 0;
 }
 
-// TODO : stick wall
 // TODO : wall jump

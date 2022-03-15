@@ -137,7 +137,10 @@ void Player::move() {
         this->dash = true;
         this->grounded = true;
     }
-    else this->position.y += this->speed.y;
+    else {
+        if ((this->collision_left != -1 || this->collision_right != -1) && this->speed.y > 0) this->speed.y /= 2;
+        this->position.y += this->speed.y;
+    }
 
     if (this->collision_left != -1 || (this->collision_up_left != -1 && this->collision_up == -1) || (this->collision_down_left != -1 && this->collision_down == -1)) this->position.x -= this->collision_left;
     else if (this->collision_right != -1 || (this->collision_up_right != -1 && this->collision_up == -1) || (this->collision_down_right != -1 && this->collision_down == -1)) this->position.x += this->collision_right;

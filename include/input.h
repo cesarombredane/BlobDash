@@ -8,7 +8,7 @@ using namespace sf;
 class Input {
 private:
     int x, y;
-    bool jump;
+    bool jump, dash;
 
 public:
     Input();
@@ -16,8 +16,10 @@ public:
     int get_x() const;
     int get_y() const;
     bool get_jump() const;
+    bool get_dash() const;
 
     void set_jump(bool);
+    void set_dash(bool);
 
     void input(RenderWindow &window, Event &event);
     void show_input() const;

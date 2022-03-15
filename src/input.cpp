@@ -1,13 +1,12 @@
 #include "../include/input.h"
 
 #include "iostream"
-#include "cmath"
 
 using namespace std;
 
 Input::Input() {
     this->x = this->y = 0;
-    this->jump = false;
+    this->jump = this->dash = false;
 }
 
 void Input::input(RenderWindow &window, Event &event) {
@@ -36,6 +35,9 @@ void Input::input(RenderWindow &window, Event &event) {
                     case Keyboard::Space:
                         this->jump = true;
                         break;
+                    case Keyboard::LShift:
+                        this->dash = true;
+                        break;
                     default:
                         break;
                 }
@@ -57,6 +59,9 @@ void Input::input(RenderWindow &window, Event &event) {
                     case Keyboard::Space:
                         this->jump = false;
                         break;
+                    case Keyboard::LShift:
+                        this->dash = false;
+                        break;
                     default:
                         break;
                 }
@@ -68,21 +73,25 @@ void Input::input(RenderWindow &window, Event &event) {
 }
 
 void Input::show_input() const {
-    cout << "x = " << this->x << " | y = " << this->y << endl;
+    cout << "x = " << this->x << " | y = " << this->y << " | jump : " << this->jump << " | dash : " << this->dash << endl;
 }
 
 int Input::get_x() const {
     return this->x;
 }
-
 int Input::get_y() const {
     return this->y;
 }
-
 bool Input::get_jump() const {
     return this->jump;
+}
+bool Input::get_dash() const {
+    return this->dash;
 }
 
 void Input::set_jump(bool jump_) {
     this->jump = jump_;
+}
+void Input::set_dash(bool dash_) {
+    this->dash = dash_;
 }

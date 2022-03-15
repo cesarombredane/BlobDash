@@ -12,7 +12,10 @@ Player::Player(Input *input, Map *map) {
     this->collision_up = this->collision_down = this->collision_left = this->collision_right =
             collision_up_left = collision_up_right = collision_down_left = collision_down_right = -1;
     this->grounded = false;
+    this->d_jump = false;
+    this->dash = false;
     this->counter_frame_jump = 0;
+    this->counter_frame_dash = 0;
     this->input = input;
     this->map = map;
 }
@@ -96,6 +99,11 @@ void Player::move() {
         this->counter_frame_jump = ++this->counter_frame_jump % this->NB_FRAME_JUMP;
         this->input->set_jump(false);
     }
+    // d-jump
+    if (this->input->get_jump() && this->d_jump) {
+        this->counter_frame_jump = 1;
+        this->d_jump = false;
+    }
 
     // speed
     if (this->acceleration.y > 0) this->speed.y = min(this->speed.y + this->acceleration.y, this->MAX_SPEED);
@@ -106,17 +114,27 @@ void Player::move() {
     else if (this->acceleration.x < 0) this->speed.x = max(this->speed.x + this->acceleration.x, -this->MAX_SPEED);
     else this->speed.x = 0;
 
+    // dash
+    if (this->input->get_dash() && this->dash || this->counter_frame_dash != 0) {
+        this->speed.x *= 3;
+        if (this->speed.x != 0)
+            this->speed.y = 0;
+        this->counter_frame_dash = ++this->counter_frame_dash % this->NB_FRAME_DASH;
+        this->input->set_dash(false);
+        this->dash = false;
+    }
+
     // collision
     this->collision();
 
     // position
     this->grounded = false;
-    if (this->collision_up != -1) {
-        this->counter_frame_jump = 0;
+    if (this->collision_up != -1)
         this->position.y -= this->collision_up;
-    }
     else if (this->collision_down != -1) {
         this->position.y += this->collision_down;
+        this->d_jump = true;
+        this->dash = true;
         this->grounded = true;
     }
     else this->position.y += this->speed.y;
@@ -141,7 +159,7 @@ void Player::show_collision() const {
 
 }
 
-void Player::show_grounded() const {
+void Player::show_state() const {
     cout << "Grounded : " << this->grounded << endl;
 }
 

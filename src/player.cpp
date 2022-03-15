@@ -12,10 +12,14 @@ Player::Player(Input *input, Map *map) {
     this->collision_up = this->collision_down = this->collision_left = this->collision_right =
             collision_up_left = collision_up_right = collision_down_left = collision_down_right = -1;
     this->grounded = false;
+    this->wall_left = false;
+    this->wall_right = false;
     this->d_jump = false;
     this->dash = false;
     this->counter_frame_jump = 0;
     this->counter_frame_dash = 0;
+    this->counter_frame_wall_jump = 0;
+    this->wall_jump_dir = 0;
     this->input = input;
     this->map = map;
 }
@@ -87,26 +91,39 @@ void Player::collision() {
 
 void Player::move() {
     // acceleration
-    // this->acceleration.y = this->input->get_y() * this->ACCELERATION;
     this->acceleration.x = this->input->get_x() * this->ACCELERATION;
 
     // gravity
-    this->acceleration.y = this->ACCELERATION;
+    this->acceleration.y = this->GRAVITY;
 
     // jump
     if ((this->input->get_jump() && this->grounded) || this->counter_frame_jump != 0) {
-        this->acceleration.y = -this->ACCELERATION;
+        this->acceleration.y = -this->JUMP_ACCELERATION;
         this->counter_frame_jump = ++this->counter_frame_jump % this->NB_FRAME_JUMP;
         this->input->set_jump(false);
     }
+    // wall-jump
+    else if (this->input->get_jump() && (this->wall_left || this->wall_right)) {
+        this->counter_frame_jump = 1;
+        this->counter_frame_wall_jump = 1;
+        this->wall_jump_dir = this->wall_left ? 1 : -1;
+        this->speed.y = 0;
+    }
     // d-jump
-    if (this->input->get_jump() && this->d_jump) {
+    else if (this->input->get_jump() && this->d_jump && !this->grounded) {
         this->counter_frame_jump = 1;
         this->d_jump = false;
+        this->speed.y = 0;
+    }
+
+    // wall jump x
+    if (this->counter_frame_wall_jump != 0) {
+        this->acceleration.x = this->wall_jump_dir * this->JUMP_ACCELERATION;
+        this->counter_frame_wall_jump = ++this->counter_frame_wall_jump % this->NB_FRAME_WALL_JUMP;
     }
 
     // speed
-    if (this->acceleration.y > 0) this->speed.y = min(this->speed.y + this->acceleration.y, this->MAX_SPEED);
+    if (this->acceleration.y > 0) this->speed.y = min(this->speed.y + this->acceleration.y, this->MAX_SPEED_GRAVITY);
     else if (this->acceleration.y < 0) this->speed.y = max(this->speed.y + this->acceleration.y, -this->MAX_SPEED);
     else this->speed.y = 0;
 
@@ -120,7 +137,6 @@ void Player::move() {
         if (this->speed.x != 0)
             this->speed.y = 0;
         this->counter_frame_dash = ++this->counter_frame_dash % this->NB_FRAME_DASH;
-        this->input->set_dash(false);
         this->dash = false;
     }
 
@@ -142,9 +158,20 @@ void Player::move() {
         this->position.y += this->speed.y;
     }
 
-    if (this->collision_left != -1 || (this->collision_up_left != -1 && this->collision_up == -1) || (this->collision_down_left != -1 && this->collision_down == -1)) this->position.x -= this->collision_left;
-    else if (this->collision_right != -1 || (this->collision_up_right != -1 && this->collision_up == -1) || (this->collision_down_right != -1 && this->collision_down == -1)) this->position.x += this->collision_right;
-    else this->position.x += this->speed.x;
+    if (this->collision_left != -1 || (this->collision_up_left != -1 && this->collision_up == -1) || (this->collision_down_left != -1 && this->collision_down == -1)) {
+        this->position.x -= this->collision_left;
+        this->wall_left = true;
+        this->wall_right = false;
+    }
+    else if (this->collision_right != -1 || (this->collision_up_right != -1 && this->collision_up == -1) || (this->collision_down_right != -1 && this->collision_down == -1)) {
+        this->position.x += this->collision_right;
+        this->wall_right = true;
+        this->wall_left = false;
+    }
+    else {
+        this->position.x += this->speed.x;
+        if (this->speed.x != 0) this->wall_left = this->wall_right = false;
+    }
 }
 
 void Player::draw_player(RenderWindow &window) {
@@ -163,7 +190,7 @@ void Player::show_collision() const {
 }
 
 void Player::show_state() const {
-    cout << "Grounded : " << this->grounded << endl;
+    cout << "Grounded: " << this->grounded << "| Right: " << this->wall_right << "| Left: " << this->wall_left << endl;
 }
 
 void Player::show_position() const {

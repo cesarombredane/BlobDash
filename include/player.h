@@ -9,10 +9,15 @@ using namespace sf;
 
 class Player {
 private:
-    const int MAX_SPEED = 12;
-    const int ACCELERATION = 4;
+    const int MAX_SPEED = 8;
+    const int MAX_SPEED_GRAVITY = 12;
+    const int ACCELERATION = 2;
+    const int GRAVITY = 4;
+    const int JUMP_ACCELERATION = 6;
+
     const int NB_FRAME_JUMP = 12;
     const int NB_FRAME_DASH = 6;
+    const int NB_FRAME_WALL_JUMP = 12;
 
     Texture texture;
     Input *input;
@@ -24,12 +29,16 @@ private:
         collision_up_left, collision_up_right, collision_down_left, collision_down_right;
 
     bool grounded;
+    bool wall_left;
+    bool wall_right;
 
     bool d_jump;
     bool dash;
 
     int counter_frame_jump;
     int counter_frame_dash;
+    int counter_frame_wall_jump;
+    int wall_jump_dir;
 
 public:
     Player(Input*, Map*);

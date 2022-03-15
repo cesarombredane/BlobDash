@@ -7,6 +7,7 @@ using namespace std;
 Input::Input() {
     this->x = this->y = 0;
     this->jump = this->dash = false;
+    this->reset_jump = true;
 }
 
 void Input::input(RenderWindow &window, Event &event) {
@@ -33,7 +34,8 @@ void Input::input(RenderWindow &window, Event &event) {
                         this->x = 1;
                         break;
                     case Keyboard::Space:
-                        this->jump = true;
+                        this->set_jump(true);
+                        this->set_reset_jump(false);
                         break;
                     case Keyboard::LShift:
                         this->dash = true;
@@ -57,7 +59,8 @@ void Input::input(RenderWindow &window, Event &event) {
                         this->x = Keyboard::isKeyPressed(Keyboard::Q) ? -1 : 0;
                         break;
                     case Keyboard::Space:
-                        this->jump = false;
+                        this->set_jump(false);
+                        this->set_reset_jump(true);
                         break;
                     case Keyboard::LShift:
                         this->dash = false;
@@ -89,9 +92,10 @@ bool Input::get_dash() const {
     return this->dash;
 }
 
-void Input::set_jump(bool jump_) {
-    this->jump = jump_;
+void Input::set_jump(bool jump_){
+    this->jump = jump_ && this->reset_jump;
 }
-void Input::set_dash(bool dash_) {
-    this->dash = dash_;
+
+void Input::set_reset_jump(bool reset_jump_) {
+    this->reset_jump = reset_jump_;
 }

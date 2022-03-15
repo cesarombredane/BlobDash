@@ -25,7 +25,6 @@ int main() {
         input->input(window, event);
 
         player->move();
-        player->show_state();
 
         window.clear();
 

@@ -103,27 +103,25 @@ void Player::move() {
         this->state = this->d_jump ? s_jump : s_djump;
         this->acceleration.y = -this->JUMP_ACCELERATION;
         this->counter_frame_jump = ++this->counter_frame_jump % this->NB_FRAME_JUMP;
-        this->input->set_jump(false);
     }
     // wall-jump
-    else if (this->input->get_jump() && (this->wall_left || this->wall_right)) {
+    if (this->input->get_jump() && (this->wall_left || this->wall_right) && !this->grounded) {
         this->counter_frame_jump = 1;
         this->counter_frame_wall_jump = 1;
         this->wall_jump_dir = this->wall_left ? 1 : -1;
         this->speed.y = 0;
-    }
-    // d-jump
+    }// d-jump
     else if (this->input->get_jump() && this->d_jump && !this->grounded) {
         this->counter_frame_jump = 1;
         this->d_jump = false;
         this->speed.y = 0;
     }
-
     // wall jump x
     if (this->counter_frame_wall_jump != 0) {
         this->acceleration.x = this->wall_jump_dir * this->JUMP_ACCELERATION;
         this->counter_frame_wall_jump = ++this->counter_frame_wall_jump % this->NB_FRAME_JUMP;
     }
+    this->input->set_jump(false);
 
     // speed
     if (this->acceleration.y > 0) this->speed.y = min(this->speed.y + this->acceleration.y, this->MAX_SPEED_GRAVITY);

@@ -7,6 +7,7 @@ using namespace std;
 
 Input::Input() {
     this->x = this->y = 0;
+    this->jump = false;
 }
 
 void Input::input(RenderWindow &window, Event &event) {
@@ -32,6 +33,9 @@ void Input::input(RenderWindow &window, Event &event) {
                     case Keyboard::D:
                         this->x = 1;
                         break;
+                    case Keyboard::Space:
+                        this->jump = true;
+                        break;
                     default:
                         break;
                 }
@@ -49,6 +53,9 @@ void Input::input(RenderWindow &window, Event &event) {
                         break;
                     case Keyboard::D:
                         this->x = Keyboard::isKeyPressed(Keyboard::Q) ? -1 : 0;
+                        break;
+                    case Keyboard::Space:
+                        this->jump = false;
                         break;
                     default:
                         break;
@@ -70,4 +77,12 @@ int Input::get_x() const {
 
 int Input::get_y() const {
     return this->y;
+}
+
+bool Input::get_jump() const {
+    return this->jump;
+}
+
+void Input::set_jump(bool jump_) {
+    this->jump = jump_;
 }

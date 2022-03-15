@@ -9,8 +9,9 @@ using namespace sf;
 
 class Player {
 private:
-    const int MAX_SPEED = 15;
+    const int MAX_SPEED = 12;
     const int ACCELERATION = 4;
+    const int NB_FRAME_JUMP = 12;
 
     Texture texture;
     Input *input;
@@ -19,6 +20,8 @@ private:
     Vector2i position, speed, acceleration;
     int collision_up, collision_down, collision_left, collision_right,
         collision_up_left, collision_up_right, collision_down_left, collision_down_right;
+    bool grounded;
+    int counter_frame_jump;
 
 public:
     Player(Input*, Map*);
@@ -29,6 +32,8 @@ public:
 
     void show_collision() const;
     void show_position() const;
+    void show_grounded() const;
+    void show_speed() const;
 };
 
 #endif

@@ -11,6 +11,8 @@ Player::Player(Input *input, Map *map) {
 
     this->collision_up = this->collision_down = this->collision_left = this->collision_right =
             collision_up_left = collision_up_right = collision_down_left = collision_down_right = -1;
+    this->grounded = false;
+    this->counter_frame_jump = 0;
     this->input = input;
     this->map = map;
 }
@@ -82,8 +84,18 @@ void Player::collision() {
 
 void Player::move() {
     // acceleration
-    this->acceleration.y = this->input->get_y() * this->ACCELERATION;
+    // this->acceleration.y = this->input->get_y() * this->ACCELERATION;
     this->acceleration.x = this->input->get_x() * this->ACCELERATION;
+
+    // gravity
+    this->acceleration.y = this->ACCELERATION;
+
+    // jump
+    if ((this->input->get_jump() && this->grounded) || this->counter_frame_jump != 0) {
+        this->acceleration.y = -this->ACCELERATION;
+        this->counter_frame_jump = ++this->counter_frame_jump % this->NB_FRAME_JUMP;
+        this->input->set_jump(false);
+    }
 
     // speed
     if (this->acceleration.y > 0) this->speed.y = min(this->speed.y + this->acceleration.y, this->MAX_SPEED);
@@ -98,8 +110,15 @@ void Player::move() {
     this->collision();
 
     // position
-    if (this->collision_up != -1) this->position.y -= this->collision_up;
-    else if (this->collision_down != -1) this->position.y += this->collision_down;
+    this->grounded = false;
+    if (this->collision_up != -1) {
+        this->counter_frame_jump = 0;
+        this->position.y -= this->collision_up;
+    }
+    else if (this->collision_down != -1) {
+        this->position.y += this->collision_down;
+        this->grounded = true;
+    }
     else this->position.y += this->speed.y;
 
     if (this->collision_left != -1 || (this->collision_up_left != -1 && this->collision_up == -1) || (this->collision_down_left != -1 && this->collision_down == -1)) this->position.x -= this->collision_left;
@@ -119,9 +138,19 @@ void Player::show_collision() const {
     if (this->collision_down != -1) cout << "down = " << this->collision_down << endl;
     if (this->collision_left != -1) cout << "left = " << this->collision_left << endl;
     if (this->collision_right != -1) cout << "right = " << this->collision_right << endl;
+
+}
+
+void Player::show_grounded() const {
+    cout << "Grounded : " << this->grounded << endl;
 }
 
 void Player::show_position() const {
     cout << "position : " << endl;
     cout << "x = " << this->position.x << " | y = " << this->position.y << endl;
+}
+
+void Player::show_speed() const {
+    cout << "x : " << this->speed.x << endl;
+    cout << "y : " << this->speed.y << endl;
 }

@@ -3,26 +3,24 @@
 using namespace std;
 using namespace sf;
 
-//constructeur
+// constructeur
 Input::Input()
 {
-    //cree une variable bool pour chaque touche du clavier necessaire
-    button.left = button.right = button.down = button.jump =
-        button.dash = false; //false la touche est relachée ; true la touche est pressé
+    // cree une variable bool pour chaque touche du clavier necessaire
+    button.left = button.right = button.down = button.jump = button.dash = false;
 }
 
-//accesseur
+// accesseur
 Input::Button Input::getButton(void) const
 {
-     return button;
+    return button;
 }
 
-//mutateur
+// mutateur
 void Input::setButton(int bouton, bool etat)
 {
     switch (bouton)
     {
-
     case down:
         button.down = etat; // la touche qui associe l'action
         break;
@@ -44,31 +42,28 @@ void Input::setButton(int bouton, bool etat)
         break;
 
     case escape:
-		button.escape = etat;
-            break;
+        button.escape = etat;
+        break;
     }
 }
 
-void Input::gestionInputs(RenderWindow &window) //Fonctions
+void Input::gestionInputs(RenderWindow &window) // Fonctions
 {
     getInput(window);
 }
 
 void Input::getInput(RenderWindow &window)
 {
-	while (window.pollEvent(event)) //tant qu'il y a des evenement a traiter
+    while (window.pollEvent(event)) // tant qu'il y a des evenement a traiter
     {
-
-        switch (event.type) //on regarde le type de l'evenement
+        switch (event.type) // on regarde le type de l'evenement
         {
-
-        case Event::Closed: //on ferme la fenetre
+        case Event::Closed: // on ferme la fenetre
             window.close();
             break;
 
-
-        case Event::KeyPressed: //touche pressée
-            switch (event.key.code)     //quelle touche a été pressée
+        case Event::KeyPressed:     // touche pressée
+            switch (event.key.code) // quelle touche a été pressée
             {
             case Keyboard::Escape: // la touche sur le clavier
                 window.close();
@@ -94,14 +89,13 @@ void Input::getInput(RenderWindow &window)
                 button.down = true;
                 break;
 
-
             default:
                 break;
             }
             break;
 
-        case Event::KeyReleased: //touche relachée
-            switch (event.key.code) //quelle touche est relachée
+        case Event::KeyReleased:    // touche relachée
+            switch (event.key.code) // quelle touche est relachée
             {
             case Keyboard::Space:
                 button.jump = false;

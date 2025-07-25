@@ -3,29 +3,32 @@
 
 #include <SFML/Graphics.hpp>
 
-class Input //creer objet Input
+class Input // creer objet Input
 {
-
-    struct Button { bool left, right, escape, down, jump, dash; }; //ajout des variables dans l'objet Input
+    struct Button
+    {
+        bool left, right, escape, down, jump, dash;
+    }; // ajout des variables dans l'objet Input
 
 public:
+    Input(); // constructeur
 
-    Input(); //constructeur
+    Button getButton(void) const; // accesseur
 
-    Button getButton(void) const; //accesseur
-
-    void setButton(int bouton, bool etat); //mutateur
+    void setButton(int bouton, bool etat); // mutateur
 
     void gestionInputs(sf::RenderWindow &window); // transformer ces touches en varaiables booléennes
-    void getInput(sf::RenderWindow &window); //recuperer les touches du clavier
-
+    void getInput(sf::RenderWindow &window);      // recuperer les touches du clavier
 
 private:
-
     sf::Event event;
     Button button;
 
-    const enum {down, right, left, dash, jump, escape}; //énumeration des boutons
-
+    const enum { down,
+                 right,
+                 left,
+                 dash,
+                 jump,
+                 escape }; // énumeration des boutons
 };
 #endif

@@ -9,34 +9,31 @@
 #include <sstream>
 #include <vector>
 
-
 class Map
 {
 public:
-
 	Map();
 
-	//Accesseurs
-	int getBeginX(void) const; //coordonnees de depart du hero
+	// Accesseurs
+	int getBeginX(void) const; // coordonnees de depart du hero
 	int getBeginY(void) const;
-	int getStartX(void) const; //point de depart pour dessiner la map
+	int getStartX(void) const; // point de depart pour dessiner la map
 	int getStartY(void) const;
-	int getMaxX(void) const; //coordonnees de fin de map
+	int getMaxX(void) const; // coordonnees de fin de map
 	int getMaxY(void) const;
 	int getTile(int x, int y) const;
 
-	//mutateurs
+	// mutateurs
 	void setStartX(int valeur);
 	void setStartY(int valeur);
 
-	//fonctions
-	void drawBackground(sf::RenderWindow &window); //dessine le background
-	void loadMap(); //charge la map depuis map.txt
-	void draw(sf::RenderWindow &window); //dessine la map charge precedement
-	void testDefilement(void); //fonction deffilement (temporraire)
+	// fonctions
+	void drawBackground(sf::RenderWindow &window); // dessine le background
+	void loadMap();																 // charge la map depuis map.txt
+	void draw(sf::RenderWindow &window);					 // dessine la map charge precedement
+	void testDefilement(void);										 // fonction deffilement (temporraire)
 
 private:
-
 	/* Coordonnees de depart du heros, lorsqu'il commence le niveau */
 	int beginx, beginy;
 
@@ -49,11 +46,11 @@ private:
 	/* Tableau a double dimension representant la map de tiles */
 	int tile[19][50];
 
-	//background
+	// background
 	sf::Texture backgroundTexture;
 	sf::Sprite background;
 
-	//Tilesets
+	// Tilesets
 	sf::Texture tileSetTexture;
 	sf::Sprite tileSet;
 
@@ -66,6 +63,5 @@ private:
 	const int MAX_MAP_Y = 19;
 
 	const int TILE_SIZE = 32;
-
 };
 #endif

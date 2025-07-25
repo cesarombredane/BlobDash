@@ -1,6 +1,6 @@
-#include "main.h"
+#include "include/main.h"
 
-int main(int argc, char *argv[])
+int main()
 {
 	RenderWindow window(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "BlobDash"); // création de l'objet fenêtre
 

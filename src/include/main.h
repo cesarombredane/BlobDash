@@ -3,11 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
-#include <stdafx.h>
 
 #include "input.h"
 #include "map.h"
-#include "Player.h"
+#include "player.h"
 
 using namespace std;
 using namespace sf;

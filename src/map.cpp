@@ -1,4 +1,4 @@
-#include "map.h"
+#include "include/map.h"
 
 using namespace std;
 using namespace sf;

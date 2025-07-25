@@ -24,11 +24,14 @@ private:
     sf::Event event;
     Button button;
 
-    const enum { down,
-                 right,
-                 left,
-                 dash,
-                 jump,
-                 escape }; // énumeration des boutons
+    enum
+    {
+        down,
+        right,
+        left,
+        dash,
+        jump,
+        escape
+    }; // énumeration des boutons
 };
 #endif

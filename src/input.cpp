@@ -1,101 +1,131 @@
-#include "../include/input.h"
-
-#include "iostream"
+#include "input.h"
 
 using namespace std;
+using namespace sf;
 
-Input::Input() {
-    this->x = this->y = 0;
-    this->jump = this->dash = false;
-    this->reset_jump = true;
+//constructeur
+Input::Input()
+{
+    //cree une variable bool pour chaque touche du clavier necessaire
+    button.left = button.right = button.down = button.jump =
+        button.dash = false; //false la touche est relachée ; true la touche est pressé
 }
 
-void Input::input(RenderWindow &window, Event &event) {
-    while (window.pollEvent(event)) {
-        switch (event.type) {
-            case Event::Closed:
-                window.close();
-                break;
-            case Event::KeyPressed:
-                switch (event.key.code) {
-                    case Keyboard::Escape:
-                        window.close();
-                        break;
-                    case Keyboard::Z:
-                        this->y = -1;
-                        break;
-                    case Keyboard::S:
-                        this->y = 1;
-                        break;
-                    case Keyboard::Q:
-                        this->x = -1;
-                        break;
-                    case Keyboard::D:
-                        this->x = 1;
-                        break;
-                    case Keyboard::Space:
-                        this->set_jump(true);
-                        this->set_reset_jump(false);
-                        break;
-                    case Keyboard::LShift:
-                        this->dash = true;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case Event::KeyReleased:
-                switch (event.key.code) {
-                    case Keyboard::Z:
-                        this->y = Keyboard::isKeyPressed(Keyboard::S) ? 1 : 0;
-                        break;
-                    case Keyboard::S:
-                        this->y = Keyboard::isKeyPressed(Keyboard::Z) ? -1 : 0;
-                        break;
-                    case Keyboard::Q:
-                        this->x = Keyboard::isKeyPressed(Keyboard::D) ? 1 : 0;
-                        break;
-                    case Keyboard::D:
-                        this->x = Keyboard::isKeyPressed(Keyboard::Q) ? -1 : 0;
-                        break;
-                    case Keyboard::Space:
-                        this->set_jump(false);
-                        this->set_reset_jump(true);
-                        break;
-                    case Keyboard::LShift:
-                        this->dash = false;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            default:
-                break;
-        }
+//accesseur
+Input::Button Input::getButton(void) const
+{
+     return button;
+}
+
+//mutateur
+void Input::setButton(int bouton, bool etat)
+{
+    switch (bouton)
+    {
+
+    case down:
+        button.down = etat; // la touche qui associe l'action
+        break;
+
+    case right:
+        button.right = etat;
+        break;
+
+    case left:
+        button.left = etat;
+        break;
+
+    case dash:
+        button.dash = etat;
+        break;
+
+    case jump:
+        button.jump = etat;
+        break;
+
+    case escape:
+		button.escape = etat;
+            break;
     }
 }
 
-void Input::show_input() const {
-    cout << "x = " << this->x << " | y = " << this->y << " | jump : " << this->jump << " | dash : " << this->dash << endl;
+void Input::gestionInputs(RenderWindow &window) //Fonctions
+{
+    getInput(window);
 }
 
-int Input::get_x() const {
-    return this->x;
-}
-int Input::get_y() const {
-    return this->y;
-}
-bool Input::get_jump() const {
-    return this->jump;
-}
-bool Input::get_dash() const {
-    return this->dash;
-}
+void Input::getInput(RenderWindow &window)
+{
+	while (window.pollEvent(event)) //tant qu'il y a des evenement a traiter
+    {
 
-void Input::set_jump(bool jump_){
-    this->jump = jump_ && this->reset_jump;
-}
+        switch (event.type) //on regarde le type de l'evenement
+        {
 
-void Input::set_reset_jump(bool reset_jump_) {
-    this->reset_jump = reset_jump_;
+        case Event::Closed: //on ferme la fenetre
+            window.close();
+            break;
+
+
+        case Event::KeyPressed: //touche pressée
+            switch (event.key.code)     //quelle touche a été pressée
+            {
+            case Keyboard::Escape: // la touche sur le clavier
+                window.close();
+                break;
+
+            case Keyboard::Space:
+                button.jump = true;
+                break;
+
+            case Keyboard::M:
+                button.dash = true;
+                break;
+
+            case Keyboard::Q:
+                button.left = true;
+                break;
+
+            case Keyboard::D:
+                button.right = true;
+                break;
+
+            case Keyboard::S:
+                button.down = true;
+                break;
+
+
+            default:
+                break;
+            }
+            break;
+
+        case Event::KeyReleased: //touche relachée
+            switch (event.key.code) //quelle touche est relachée
+            {
+            case Keyboard::Space:
+                button.jump = false;
+                break;
+
+            case Keyboard::Q:
+                button.left = false;
+                break;
+
+            case Keyboard::D:
+                button.right = false;
+                break;
+
+            case Keyboard::S:
+                button.down = false;
+                break;
+
+            default:
+                break;
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
 }

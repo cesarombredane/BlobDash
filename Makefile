@@ -6,8 +6,8 @@ CXXFLAGS = -std=c++11 -Wall -Wextra -O2 -Isrc/include
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 # Directories
-SRC_DIR = .
-INCLUDE_DIR = include
+SRC_DIR = src/object
+INCLUDE_DIR = src/include
 BUILD_DIR = build
 
 # Source files

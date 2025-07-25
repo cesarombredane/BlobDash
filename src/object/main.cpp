@@ -1,4 +1,4 @@
-#include "include/main.h"
+#include "../include/main.h"
 
 int main()
 {
@@ -6,7 +6,7 @@ int main()
 
 	// on affiche l'icon
 	Image icon;
-	if (!icon.loadFromFile("assets/graphics/icon.png"))
+	if (!icon.loadFromFile("src/assets/graphics/icon.png"))
 		exit(EXIT_FAILURE);
 
 	window.setIcon(16, 16, icon.getPixelsPtr());
@@ -21,8 +21,8 @@ int main()
 
 	player.initialize(map);
 
-	if (!music.openFromFile("assets/sound/music.wav"))
-		return -1; // error
+	if (!music.openFromFile("src/assets/sound/music.wav"))
+		return -1;
 
 	music.setVolume(0);
 	music.setLoop(true);

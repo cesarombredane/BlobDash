@@ -1,4 +1,4 @@
-#include "include/player.h"
+#include "../include/player.h"
 
 using namespace std;
 using namespace sf;
@@ -6,7 +6,7 @@ using namespace sf;
 Player::Player()
 {
 	// Chargement de la spritesheet de Player
-	if (!texturePlayer.loadFromFile("assets/graphics/spritesheet.png"))
+	if (!texturePlayer.loadFromFile("src/assets/graphics/spritesheet.png"))
 	{
 		// Erreur
 		cout << "Erreur durant le chargement du spritesheet du Player." << endl;

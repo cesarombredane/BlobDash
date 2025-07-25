@@ -6,7 +6,7 @@ using namespace sf;
 Player::Player()
 {
 	// Chargement de la spritesheet de Player
-	if (!texturePlayer.loadFromFile("graphics/spritesheet.png"))
+	if (!texturePlayer.loadFromFile("assets/graphics/spritesheet.png"))
 	{
 		// Erreur
 		cout << "Erreur durant le chargement du spritesheet du Player." << endl;

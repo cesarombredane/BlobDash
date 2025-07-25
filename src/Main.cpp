@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 
 	// on affiche l'icon
 	Image icon;
-	if (!icon.loadFromFile("graphics/icon.png"))
+	if (!icon.loadFromFile("assets/graphics/icon.png"))
 		exit(EXIT_FAILURE);
 
 	window.setIcon(16, 16, icon.getPixelsPtr());
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 	player.initialize(map);
 
-	if (!music.openFromFile("sound/music.wav"))
+	if (!music.openFromFile("assets/sound/music.wav"))
 		return -1; // error
 
 	music.setVolume(0);

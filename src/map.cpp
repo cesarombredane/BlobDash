@@ -6,14 +6,14 @@ using namespace sf;
 // constructeur
 Map::Map()
 {
-	if (!backgroundTexture.loadFromFile("graphics/background.png")) // chargement du background
+	if (!backgroundTexture.loadFromFile("assets/graphics/background.png")) // chargement du background
 	{
 		cout << "Erreur durant le chargement de l'image de background." << endl;
 	}
 	else
 		background.setTexture(backgroundTexture);
 
-	if (!tileSetTexture.loadFromFile("graphics/tileset.png")) // chargement de la tileset
+	if (!tileSetTexture.loadFromFile("assets/graphics/tileset.png")) // chargement de la tileset
 	{
 		cout << "Erreur durant le chargement de l'image du tileset." << endl;
 	}
@@ -62,7 +62,7 @@ void Map::loadMap()
 
 	stringstream iostr; // costructeuration d'un stringstream pour gerer les chaines
 
-	fin.open("map/map.txt"); // on ouvre le fichier map
+	fin.open("assets/map/map.txt"); // on ouvre le fichier map
 
 	if (!fin.is_open()) // en cas d'erreur on leve une exeption
 	{

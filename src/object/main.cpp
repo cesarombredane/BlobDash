@@ -10,7 +10,8 @@ int main()
 		exit(EXIT_FAILURE);
 
 	window.setIcon(16, 16, icon.getPixelsPtr());
-	window.setVerticalSyncEnabled(true); // activation de la syncronisation vertical
+	window.setVerticalSyncEnabled(true);
+	window.setFramerateLimit(60);
 
 	// création des objet Input et Map.
 	Input input;
